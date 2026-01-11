@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Access Your Account</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        color: #e0e0e0;
+      }
+
+      .login-container {
+        background: #1e1e1e;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        width: 100%;
+        max-width: 450px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .login-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      }
+
+      .form-header {
+        background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+        color: white;
+        padding: 40px 30px;
+        text-align: center;
+      }
+
+      .form-header h1 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+        font-weight: 300;
+      }
+
+      .form-header p {
+        opacity: 0.9;
+        font-size: 1rem;
+      }
+
+      .form-body {
+        padding: 40px 30px;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+        position: relative;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #ffffff;
+        font-size: 0.95rem;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #444444;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #2a2a2a;
+        color: #e0e0e0;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: #4a90e2;
+        background: #3a3a3a;
+        box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+      }
+
+      .form-group input:hover,
+      .form-group select:hover {
+        border-color: #555555;
+        background: #3a3a3a;
+      }
+
+      .form-group input::placeholder {
+        color: #888888;
+      }
+
+      .password-input-container {
+        position: relative;
+      }
+
+      .password-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.1rem;
+        color: #666;
+        padding: 5px;
+        transition: color 0.3s ease;
+      }
+
+      .password-toggle:hover {
+        color: #4a90e2;
+      }
+
+      .role-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 12px center;
+        background-repeat: no-repeat;
+        background-size: 16px;
+        padding-right: 40px;
+      }
+
+      .login-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .login-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(74, 144, 226, 0.3);
+      }
+
+      .login-btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .spinner {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top: 2px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 10px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .btn-content {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .error-message {
+        background: #b71c1c;
+        color: #ffcdd2;
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        border-left: 4px solid #f44336;
+        display: none;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+      }
+
+      .error-message.show {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .form-links {
+        text-align: center;
+        margin-top: 25px;
+        padding-top: 25px;
+        border-top: 1px solid #444444;
+      }
+
+      .form-links a {
+        color: #4a90e2;
+        text-decoration: none;
+        font-weight: 500;
+        margin: 0 10px;
+      }
+
+      .form-links a:hover {
+        text-decoration: underline;
+      }
+
+      .guest-section {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #444444;
+      }
+
+      .guest-btn {
+        display: inline-block;
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white;
+        text-decoration: none;
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+      }
+
+      .guest-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+        background: linear-gradient(135deg, #5a6268 0%, #343a40 100%);
+      }
+
+      .guest-text {
+        color: #b0b0b0;
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+      }
+
+      .forgot-password {
+        text-align: center;
+        margin-top: 15px;
+      }
+
+      .forgot-password a {
+        color: #b0b0b0;
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+
+      .forgot-password a:hover {
+        color: #4a90e2;
+        text-decoration: underline;
+      }
+
+      /* Field validation styles */
+      .form-group input.error,
+      .form-group select.error {
+        border-color: #f44336;
+        background: #3d1a1a;
+      }
+
+      .form-group input.valid,
+      .form-group select.valid {
+        border-color: #4caf50;
+      }
+
+      .field-error {
+        color: #f44336;
+        font-size: 0.875rem;
+        margin-top: 5px;
+        display: none;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        body {
+          padding: 15px;
+        }
+
+        .login-container {
+          border-radius: 15px;
+        }
+
+        .form-header {
+          padding: 30px 25px;
+        }
+
+        .form-header h1 {
+          font-size: 1.8rem;
+        }
+
+        .form-body {
+          padding: 30px 25px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .form-header {
+          padding: 25px 20px;
+        }
+
+        .form-header h1 {
+          font-size: 1.6rem;
+        }
+
+        .form-body {
+          padding: 25px 20px;
+        }
+
+        .form-group input,
+        .form-group select {
+          padding: 10px 14px;
+        }
+
+        .login-btn {
+          padding: 12px;
+          font-size: 1rem;
+        }
+      }
+
+      /* Accessibility improvements */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="form-header">
+        <h1>Welcome Back</h1>
+        <p>Sign in to your account</p>
+      </div>
+
+      <div class="form-body">
+        <!-- form will be submitted via fetch to login.php -->
+        <form id="loginForm" method="POST" novalidate>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              autocomplete="email"
+            />
+            <div class="field-error" id="emailError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-input-container">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                autocomplete="current-password"
+              />
+              <button
+                type="button"
+                class="password-toggle"
+                id="passwordToggle"
+                aria-label="Show password"
+              >
+                👁️
+              </button>
+            </div>
+            <div class="field-error" id="passwordError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="role">Role</label>
+            <select id="role" name="role" class="role-select" required>
+              <option value="">Select your role</option>
+              <option value="learner">Learner</option>
+              <option value="creator">Creator</option>
+              <option value="admin">Admin</option>
+            </select>
+            <div class="field-error" id="roleError"></div>
+          </div>
+
+          <button type="submit" class="login-btn" id="loginBtn" disabled>
+            <span class="btn-content">
+              <div class="spinner" id="spinner"></div>
+              <span id="btnText">Sign In</span>
+            </span>
+          </button>
+
+          <div class="forgot-password">
+            <a
+              href="#"
+              onclick="alert('Password reset functionality would be implemented here')"
+              >Forgot your password?</a
+            >
+          </div>
+        </form>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="form-links">
+          <p>
+            Don't have an account? <a href="register.html">Create one here</a>
+          </p>
+        </div>
+
+        <div class="guest-section">
+          <p class="guest-text">Want to explore without signing up?</p>
+          <a href="guest.php" class="guest-btn" onclick="window.location.href='guest.php'; return false;">🌟 Enter as Guest</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // DOM elements
+      const form = document.getElementById("loginForm");
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const roleSelect = document.getElementById("role");
+      const loginBtn = document.getElementById("loginBtn");
+      const passwordToggle = document.getElementById("passwordToggle");
+      const spinner = document.getElementById("spinner");
+      const btnText = document.getElementById("btnText");
+      const errorMessage = document.getElementById("errorMessage");
+
+      // Password toggle
+      passwordToggle.addEventListener("click", () => {
+        const type = passwordInput.type === "password" ? "text" : "password";
+        passwordInput.type = type;
+        passwordToggle.textContent = type === "password" ? "👁️" : "🙈";
+        passwordToggle.setAttribute(
+          "aria-label",
+          type === "password" ? "Show password" : "Hide password"
+        );
+      });
+
+      // Simple validation helpers
+      function showFieldError(fieldId, message) {
+        const field = document.getElementById(fieldId);
+        const errorElement = document.getElementById(fieldId + "Error");
+        if (field) field.classList.add("error");
+        if (errorElement) {
+          errorElement.textContent = message;
+          errorElement.style.display = "block";
+        }
+      }
+
+      function hideFieldError(fieldId) {
+        const field = document.getElementById(fieldId);
+        const errorElement = document.getElementById(fieldId + "Error");
+        if (field) {
+          field.classList.remove("error");
+          field.classList.add("valid");
+        }
+        if (errorElement) errorElement.style.display = "none";
+      }
+
+      function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email.trim()) {
+          showFieldError("email", "Email is required");
+          return false;
+        }
+        if (!emailRegex.test(email)) {
+          showFieldError("email", "Please enter a valid email address");
+          return false;
+        }
+        hideFieldError("email");
+        return true;
+      }
+
+      function validatePassword(password) {
+        if (!password) {
+          showFieldError("password", "Password is required");
+          return false;
+        }
+        if (password.length < 6) {
+          showFieldError("password", "Password must be at least 6 characters");
+          return false;
+        }
+        hideFieldError("password");
+        return true;
+      }
+
+      function validateRole(role) {
+        if (!role) {
+          showFieldError("role", "Please select your role");
+          return false;
+        }
+        hideFieldError("role");
+        return true;
+      }
+
+      function checkFormValidity() {
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        const role = roleSelect.value;
+        const isValid = email.trim() && password && role;
+        loginBtn.disabled = !isValid;
+        return isValid;
+      }
+
+      function showErrorMessage(message) {
+        errorMessage.textContent = message;
+        errorMessage.classList.add("show");
+        setTimeout(() => {
+          errorMessage.classList.remove("show");
+        }, 5000);
+      }
+
+      // Real-time validation
+      emailInput.addEventListener("input", () => {
+        if (emailInput.value.trim()) validateEmail(emailInput.value);
+        else hideFieldError("email");
+        checkFormValidity();
+      });
+      passwordInput.addEventListener("input", () => {
+        if (passwordInput.value) validatePassword(passwordInput.value);
+        else hideFieldError("password");
+        checkFormValidity();
+      });
+      roleSelect.addEventListener("change", () => {
+        if (roleSelect.value) validateRole(roleSelect.value);
+        else hideFieldError("role");
+        checkFormValidity();
+      });
+
+      // Submit using fetch to login.php
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        const role = roleSelect.value;
+
+        const isValidEmail = validateEmail(email);
+        const isValidPassword = validatePassword(password);
+        const isValidRole = validateRole(role);
+
+        if (!isValidEmail || !isValidPassword || !isValidRole) return;
+
+        // UI loading
+        loginBtn.disabled = true;
+        spinner.style.display = "inline-block";
+        btnText.textContent = "Signing In...";
+        errorMessage.classList.remove("show");
+
+        try {
+          const formData = new FormData();
+          formData.append("email", email);
+          formData.append("password", password);
+          formData.append("role", role);
+
+          const resp = await fetch("login.php", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!resp.ok) {
+            throw new Error("Server error");
+          }
+
+          const data = await resp.json();
+
+          if (data.success) {
+            // redirect to server-provided url
+            window.location.href = data.redirect;
+          } else {
+            showErrorMessage(data.message || "Invalid credentials.");
+            loginBtn.disabled = false;
+            spinner.style.display = "none";
+            btnText.textContent = "Sign In";
+          }
+        } catch (err) {
+          showErrorMessage("Unable to login. Try again.");
+          loginBtn.disabled = false;
+          spinner.style.display = "none";
+          btnText.textContent = "Sign In";
+        }
+      });
+
+      // Clear error on focus
+      [emailInput, passwordInput, roleSelect].forEach((input) => {
+        input.addEventListener("focus", () => {
+          errorMessage.classList.remove("show");
+        });
+      });
+
+      // init
+      checkFormValidity();
+    </script>
+  </body>
+</html>

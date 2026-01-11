@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - Create Your Account</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        color: #e0e0e0;
+      }
+
+      .registration-container {
+        background: #1e1e1e;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        width: 100%;
+        max-width: 500px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .registration-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      }
+
+      .form-header {
+        background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .form-header h1 {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        font-weight: 300;
+      }
+
+      .form-header p {
+        opacity: 0.9;
+        font-size: 1rem;
+      }
+
+      .role-tabs {
+        display: flex;
+        background: #2a2a2a;
+        margin: 0;
+      }
+
+      .role-tab {
+        flex: 1;
+        padding: 15px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        color: #b0b0b0;
+      }
+
+      .role-tab.active {
+        background: #1e1e1e;
+        color: #4a90e2;
+        border-bottom: 3px solid #4a90e2;
+      }
+
+      .role-tab:hover:not(.active) {
+        background: #3a3a3a;
+        color: #ffffff;
+      }
+
+      .form-body {
+        padding: 30px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #ffffff;
+        font-size: 0.95rem;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #444444;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #2a2a2a;
+        color: #e0e0e0;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: #8b5cf6;
+        background: #333333;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+      }
+
+      .form-group input:hover {
+        border-color: #555555;
+        background: #333333;
+      }
+
+      .wallet-field {
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        margin-bottom: 0;
+      }
+
+      .wallet-field.visible {
+        opacity: 1;
+        max-height: 100px;
+        margin-bottom: 20px;
+      }
+
+      .error-message {
+        color: #ff6b6b;
+        font-size: 0.875rem;
+        margin-top: 5px;
+        display: none;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .submit-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+      }
+
+      .submit-btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      .spinner {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top: 2px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 10px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .btn-text {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #444444;
+      }
+
+      .login-link a {
+        color: #8b5cf6;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .login-link a:hover {
+        text-decoration: underline;
+      }
+
+      .guest-section {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #444444;
+      }
+
+      .guest-btn {
+        display: inline-block;
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white;
+        text-decoration: none;
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+      }
+
+      .guest-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+        background: linear-gradient(135deg, #5a6268 0%, #343a40 100%);
+      }
+
+      .guest-text {
+        color: #a0a0a0;
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        body {
+          padding: 10px;
+        }
+
+        .registration-container {
+          border-radius: 15px;
+        }
+
+        .form-header {
+          padding: 25px 20px;
+        }
+
+        .form-header h1 {
+          font-size: 1.75rem;
+        }
+
+        .form-body {
+          padding: 25px 20px;
+        }
+
+        .role-tab {
+          padding: 12px;
+          font-size: 0.9rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .form-header h1 {
+          font-size: 1.5rem;
+        }
+
+        .form-body {
+          padding: 20px 15px;
+        }
+
+        .form-group input {
+          padding: 10px 14px;
+        }
+
+        .submit-btn {
+          padding: 12px;
+          font-size: 1rem;
+        }
+      }
+
+      /* Accessibility improvements */
+      .form-group input:invalid {
+        border-color: #dc3545;
+      }
+
+      .form-group input:valid {
+        border-color: #28a745;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="registration-container">
+      <div class="form-header">
+        <h1>Create Account</h1>
+        <p>Join our community today</p>
+      </div>
+
+      <div class="role-tabs">
+        <button type="button" class="role-tab active" data-role="learner">
+          Learner
+        </button>
+        <button type="button" class="role-tab" data-role="creator">
+          Creator
+        </button>
+      </div>
+
+      <div class="form-body">
+        <!-- form posts to register.php -->
+        <form
+          id="registrationForm"
+          action="register.php"
+          method="POST"
+          novalidate
+        >
+          <input type="hidden" name="role" id="roleInput" value="learner" />
+
+          <div class="form-group">
+            <label for="fullName">Full Name *</label>
+            <input type="text" id="fullName" name="fullName" required />
+            <div class="error-message" id="fullNameError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" required />
+            <div class="error-message" id="emailError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="idNumber">ID Number *</label>
+            <input type="text" id="idNumber" name="idNumber" required />
+            <div class="error-message" id="idNumberError"></div>
+          </div>
+
+          <div class="form-group wallet-field" id="walletField">
+            <label for="walletAddress">Wallet Address *</label>
+            <input type="text" id="walletAddress" name="walletAddress" />
+            <div class="error-message" id="walletAddressError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password *</label>
+            <input type="password" id="password" name="password" required />
+            <div class="error-message" id="passwordError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password *</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              required
+            />
+            <div class="error-message" id="confirmPasswordError"></div>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <span class="btn-text">
+              <div class="spinner" id="spinner"></div>
+              <span id="btnText">Create Account</span>
+            </span>
+          </button>
+        </form>
+
+        <div class="login-link">
+          <p>Already have an account? <a href="login.html">Sign in here</a></p>
+        </div>
+
+        <div class="guest-section">
+          <p class="guest-text">Want to explore without signing up?</p>
+          <a href="guest.php" class="guest-btn" onclick="window.location.href='guest.php'; return false;">🌟 Enter as Guest</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Role tab functionality
+      const roleTabs = document.querySelectorAll(".role-tab");
+      const walletField = document.getElementById("walletField");
+      const walletInput = document.getElementById("walletAddress");
+      const roleInput = document.getElementById("roleInput");
+      let currentRole = "learner";
+
+      roleTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          // Remove active class from all tabs
+          roleTabs.forEach((t) => t.classList.remove("active"));
+          // Add active class to clicked tab
+          tab.classList.add("active");
+
+          currentRole = tab.dataset.role;
+          roleInput.value = currentRole;
+
+          // Show/hide wallet field based on role
+          if (currentRole === "learner") {
+            walletField.classList.add("visible");
+            walletInput.required = true;
+          } else {
+            walletField.classList.remove("visible");
+            walletInput.required = false;
+            walletInput.value = "";
+            hideError("walletAddressError");
+          }
+        });
+      });
+
+      // Initialize wallet field visibility
+      walletField.classList.add("visible");
+      walletInput.required = true;
+      roleInput.value = "learner";
+
+      // Form validation
+      const form = document.getElementById("registrationForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const spinner = document.getElementById("spinner");
+      const btnText = document.getElementById("btnText");
+
+      function showError(elementId, message) {
+        const errorElement = document.getElementById(elementId);
+        if (!errorElement) return;
+        errorElement.textContent = message;
+        errorElement.style.display = "block";
+      }
+
+      function hideError(elementId) {
+        const errorElement = document.getElementById(elementId);
+        if (!errorElement) return;
+        errorElement.style.display = "none";
+      }
+
+      function validateFullName(name) {
+        if (!name || !name.trim()) {
+          showError("fullNameError", "Full name is required");
+          return false;
+        }
+        if (name.trim().length < 2) {
+          showError("fullNameError", "Full name must be at least 2 characters");
+          return false;
+        }
+        hideError("fullNameError");
+        return true;
+      }
+
+      function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) {
+          showError("emailError", "Email is required");
+          return false;
+        }
+        if (!emailRegex.test(email)) {
+          showError("emailError", "Please enter a valid email address");
+          return false;
+        }
+        hideError("emailError");
+        return true;
+      }
+
+      function validateIdNumber(idNumber) {
+        if (!idNumber || !idNumber.trim()) {
+          showError("idNumberError", "ID number is required");
+          return false;
+        }
+        if (idNumber.trim().length < 5) {
+          showError("idNumberError", "ID number must be at least 5 characters");
+          return false;
+        }
+        hideError("idNumberError");
+        return true;
+      }
+
+      function validateWalletAddress(walletAddress) {
+        if (currentRole === "learner") {
+          if (!walletAddress || !walletAddress.trim()) {
+            showError(
+              "walletAddressError",
+              "Wallet address is required for learners"
+            );
+            return false;
+          }
+          if (walletAddress.trim().length < 10) {
+            showError(
+              "walletAddressError",
+              "Please enter a valid wallet address"
+            );
+            return false;
+          }
+        }
+        hideError("walletAddressError");
+        return true;
+      }
+
+      function validatePassword(password) {
+        if (!password) {
+          showError("passwordError", "Password is required");
+          return false;
+        }
+        if (password.length < 8) {
+          showError("passwordError", "Password must be at least 8 characters");
+          return false;
+        }
+        if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+          showError(
+            "passwordError",
+            "Password must contain uppercase, lowercase, and number"
+          );
+          return false;
+        }
+        hideError("passwordError");
+        return true;
+      }
+
+      function validateConfirmPassword(password, confirmPassword) {
+        if (!confirmPassword) {
+          showError("confirmPasswordError", "Please confirm your password");
+          return false;
+        }
+        if (password !== confirmPassword) {
+          showError("confirmPasswordError", "Passwords do not match");
+          return false;
+        }
+        hideError("confirmPasswordError");
+        return true;
+      }
+
+      // Real-time validation event listeners
+      document
+        .getElementById("fullName")
+        .addEventListener("blur", (e) => validateFullName(e.target.value));
+      document
+        .getElementById("email")
+        .addEventListener("blur", (e) => validateEmail(e.target.value));
+      document
+        .getElementById("idNumber")
+        .addEventListener("blur", (e) => validateIdNumber(e.target.value));
+      document
+        .getElementById("walletAddress")
+        .addEventListener("blur", (e) => validateWalletAddress(e.target.value));
+      document
+        .getElementById("password")
+        .addEventListener("blur", (e) => validatePassword(e.target.value));
+      document
+        .getElementById("confirmPassword")
+        .addEventListener("blur", (e) =>
+          validateConfirmPassword(
+            document.getElementById("password").value,
+            e.target.value
+          )
+        );
+
+      // Submit: validate then submit form to server (register.php)
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const fullName = document.getElementById("fullName").value;
+        const email = document.getElementById("email").value;
+        const idNumber = document.getElementById("idNumber").value;
+        const walletAddress = document.getElementById("walletAddress").value;
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+
+        const isValidName = validateFullName(fullName);
+        const isValidEmail = validateEmail(email);
+        const isValidId = validateIdNumber(idNumber);
+        const isValidWallet = validateWalletAddress(walletAddress);
+        const isValidPassword = validatePassword(password);
+        const isValidConfirm = validateConfirmPassword(
+          password,
+          confirmPassword
+        );
+
+        if (
+          !isValidName ||
+          !isValidEmail ||
+          !isValidId ||
+          !isValidWallet ||
+          !isValidPassword ||
+          !isValidConfirm
+        ) {
+          return;
+        }
+
+        // show loading state then submit
+        submitBtn.disabled = true;
+        spinner.style.display = "inline-block";
+        btnText.textContent = "Creating Account...";
+
+        // submit the form normally
+        form.submit();
+      });
+
+      // Clear errors on input
+      const inputs = form.querySelectorAll("input");
+      inputs.forEach((input) => {
+        input.addEventListener("input", () => {
+          const errorId = input.name + "Error";
+          hideError(errorId);
+        });
+      });
+    </script>
+  </body>
+</html>
