@@ -1,3 +1,3 @@
 # 🎓 NFT Learning Platform
 
-update by kavindu
+Project Description (updated by Team)
