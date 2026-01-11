@@ -8,6 +8,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
+// Get admin details
+$admin_id = $_SESSION['user_id'];
+$admin_query = "SELECT full_name, email FROM admins WHERE id = '$admin_id'";
+$admin_result = mysqli_query($conn, $admin_query);
+$admin = mysqli_fetch_assoc($admin_result);
 
 // ==============================================
 // DASHBOARD STATISTICS CALCULATION
