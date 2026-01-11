@@ -11,7 +11,25 @@ if ($course_id <= 0) {
 }
 
 // Get course details from database
-
+$course_query = "SELECT 
+    c.id,
+    c.course_name as title,
+    c.description,
+    c.category,
+    c.price,
+    c.duration,
+    c.students_enrolled,
+    c.rating,
+    c.total_reviews,
+    c.status,
+    c.video_path,
+    c.thumbnail,
+    c.created_at,
+    c.updated_at,
+    cr.full_name as instructor_name,
+    cr.id as creator_id,
+    cr.profile_picture as creator_profile_picture
+FROM courses c 
 LEFT JOIN creators cr ON c.creator_id = cr.id 
 WHERE c.id = ? AND c.status = 'published'
 LIMIT 1";
