@@ -10,7 +10,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 }
 
 // Get JSON input
+$input = json_decode(file_get_contents('php://input'), true);
 
+if (!$input || !isset($input['course_id']) || !isset($input['action'])) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Invalid request data']);
+    exit();
+}
 
 $course_id = intval($input['course_id']);
 $action = $input['action'];
