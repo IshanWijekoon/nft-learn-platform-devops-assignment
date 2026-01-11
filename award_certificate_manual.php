@@ -10,7 +10,15 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['role'] !== 'admin' && $_SESSION[
 
 echo "<h2>Manual NFT Certificate Award</h2>";
 
-
+if ($_POST) {
+    $course_id = intval($_POST['course_id']);
+    $learner_id = intval($_POST['learner_id']);
+    
+    echo "<h3>Awarding Certificate...</h3>";
+    echo "<p>Course ID: $course_id, Learner ID: $learner_id</p>";
+    
+    $result = awardNFTCertificate($course_id, $learner_id);
+    
     if ($result['success']) {
         echo "<div style='background: green; color: white; padding: 1rem; border-radius: 5px; margin: 1rem 0;'>";
         echo "<h3>✓ Certificate Awarded Successfully!</h3>";

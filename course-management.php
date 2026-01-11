@@ -21,7 +21,11 @@ include 'db.php';
 // CREATOR ACCESS CONTROL
 // ==============================================
 // AUTHENTICATION CHECK: Ensure only logged-in creators can access this page
-
+// Redirects to login if user is not authenticated or not a creator
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'creator') {
+    header('Location: login.html');
+    exit();
+}
 
 // EXTRACT USER ID: Get creator ID from session for database queries
 $user_id = $_SESSION['user_id'];

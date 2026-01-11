@@ -8,7 +8,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'creator') {
     exit();
 }
 
+$user_id = $_SESSION['user_id'];
 
+// Get creator info
+$creator_query = "SELECT full_name FROM creators WHERE id = '$user_id'";
+$creator_result = mysqli_query($conn, $creator_query);
+$creator = mysqli_fetch_assoc($creator_result);
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>

@@ -8,6 +8,18 @@ session_start();
 include 'db.php';
 include 'nft_certificate_system.php';
 
+header('Content-Type: application/json');
+
+// Check if user is logged in as learner
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'learner') {
+    echo json_encode(['success' => false, 'message' => 'Not authorized']);
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+    exit();
+}
 
 // Get input data
 $input = json_decode(file_get_contents('php://input'), true);

@@ -18,6 +18,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'learner') {
 // Get course ID from URL parameter
 $course_id = isset($_GET['course_id']) ? intval($_GET['course_id']) : 0;
 
+if (!$course_id) {
+    echo "<script>alert('Invalid course ID'); window.history.back();</script>";
+    exit();
+}
+
 $learner_id = $_SESSION['user_id'];
 
 // Get course details with creator profile picture

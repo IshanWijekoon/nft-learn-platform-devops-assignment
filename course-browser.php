@@ -9,7 +9,14 @@ $user_id = $_SESSION['user_id'] ?? null;
 $user_info = null;
 
 if ($is_logged_in) {
-   ader('Location: course-browser-creator.php');
+    if ($user_role === 'learner') {
+        // Get learner info
+        $learner_query = "SELECT full_name FROM learners WHERE id = '$user_id'";
+        $learner_result = mysqli_query($conn, $learner_query);
+        $user_info = mysqli_fetch_assoc($learner_result);
+    } elseif ($user_role === 'creator') {
+        // Redirect creators to their course browser
+        header('Location: course-browser-creator.php');
         exit();
     } elseif ($user_role === 'admin') {
         // Redirect admins to admin panel

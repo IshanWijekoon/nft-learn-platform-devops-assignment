@@ -9,7 +9,13 @@ $is_logged_in = false;
 // Check if user is optionally logged in
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
-a charset="UTF-8" />
+    $is_logged_in = true;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Browse Courses - EduChain</title>
     <style>
