@@ -1,8 +1,8 @@
 <?php
 $DB_HOST = 'sql12.freesqldatabase.com';
-$DB_USER = 'sql12814236';
-$DB_PASS = 'A8MhYZy1w';
-$DB_NAME = 'sql12814236';
+$DB_USER = 'sql12814258';
+$DB_PASS = 'rAdWn25WHK';
+$DB_NAME = 'sql12814258';
 $DB_PORT = 3306;
 
 // Suppress warnings for cleaner JSON responses
@@ -25,3 +25,4 @@ if ($conn->connect_error) {
 
 $conn->set_charset('utf8mb4');
 ?>
+
