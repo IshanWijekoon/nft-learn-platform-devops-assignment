@@ -3,10 +3,12 @@ header('Content-Type: application/json; charset=utf-8');
 // DEBUG MODE: remove detailed errors after fixing
 $DEBUG = true;
 
-$DB_HOST = '127.0.0.1';
-$DB_NAME = 'educhain';
-$DB_USER = 'root';
-$DB_PASS = '';
+require_once __DIR__ . 'db.php';
+
+$DB_HOST = 'sql12.freesqldatabase.com';
+$DB_NAME = 'sql12814258';
+$DB_USER = 'sql12814258';
+$DB_PASS = 'rAdWn25WHK';
 
 $raw = file_get_contents('php://input');
 $input = json_decode($raw, true);

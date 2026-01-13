@@ -5,24 +5,12 @@ $DB_PASS = 'rAdWn25WHK';
 $DB_NAME = 'sql12814258';
 $DB_PORT = 3306;
 
-// Suppress warnings for cleaner JSON responses
-error_reporting(E_ERROR | E_PARSE);
-ini_set('display_errors', 0);
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-$conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME, $DB_PORT);
-
-if ($conn->connect_error) {
-    error_log('Database connection error: ' . $conn->connect_error);
-    if (headers_sent() === false) {
-        header('Content-Type: application/json');
-    }
-    echo json_encode([
-        'success' => false,
-        'message' => 'Database connection failed'
-    ]);
-    exit();
+try {
+    $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME, $DB_PORT);
+    $conn->set_charset("utf8mb4");
+} catch (mysqli_sql_exception $e) {
+    error_log("DB ERROR: " . $e->getMessage());
+    die("Database connection failed");
 }
-
-$conn->set_charset('utf8mb4');
-?>
-
