@@ -65,7 +65,7 @@ CREATE TABLE `admin_actions` (
 --
 
 CREATE TABLE `courses` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `creator_id` int(11) NOT NULL,
   `course_name` varchar(255) NOT NULL,
   `description` text NOT NULL,
@@ -76,8 +76,10 @@ CREATE TABLE `courses` (
   `rating` decimal(3,2) DEFAULT 0.00,
   `total_reviews` int(11) DEFAULT 0,
   `status` enum('draft','published','archived') DEFAULT 'published',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME DEFAULT NULL,
+
   `video_path` varchar(500) DEFAULT NULL,
   `thumbnail` varchar(255) DEFAULT NULL,
   `nft_certificate_image` varchar(255) DEFAULT NULL,
@@ -85,8 +87,11 @@ CREATE TABLE `courses` (
   `approved_at` timestamp NULL DEFAULT NULL,
   `rejected_at` timestamp NULL DEFAULT NULL,
   `suspended_at` timestamp NULL DEFAULT NULL,
-  `rejection_reason` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `rejection_reason` text DEFAULT NULL,
+
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 --
 -- Dumping data for table `courses`
@@ -351,7 +356,8 @@ INSERT INTO `nft_verifications` (`id`, `certificate_id`, `verification_code`, `v
 --
 ALTER TABLE `admins`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`(191));
+
 
 --
 -- Indexes for table `admin_actions`
@@ -381,7 +387,8 @@ ALTER TABLE `course_categories`
 --
 ALTER TABLE `creators`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`(191));
+
 
 --
 -- Indexes for table `enrollments`
@@ -399,15 +406,16 @@ ALTER TABLE `enrollments`
 --
 ALTER TABLE `learners`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`(191));
+
 
 --
 -- Indexes for table `nft_certificates`
 --
 ALTER TABLE `nft_certificates`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `nft_key` (`nft_key`),
-  ADD UNIQUE KEY `certificate_hash` (`certificate_hash`),
+  ADD UNIQUE KEY `nft_key` (`nft_key`(191)),
+  ADD UNIQUE KEY `certificate_hash` (`certificate_hash`(191)),
   ADD KEY `idx_course_learner` (`course_id`,`learner_id`),
   ADD KEY `idx_nft_key` (`nft_key`),
   ADD KEY `idx_certificate_hash` (`certificate_hash`);
@@ -417,7 +425,7 @@ ALTER TABLE `nft_certificates`
 --
 ALTER TABLE `nft_settings`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `setting_key` (`setting_key`),
+  ADD UNIQUE KEY `setting_key` (`setting_key`(191)),
   ADD KEY `idx_setting_key` (`setting_key`);
 
 --
@@ -425,7 +433,7 @@ ALTER TABLE `nft_settings`
 --
 ALTER TABLE `nft_verifications`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `verification_code` (`verification_code`),
+  ADD UNIQUE KEY `verification_code` (`verification_code`(191)),
   ADD KEY `idx_certificate_id` (`certificate_id`),
   ADD KEY `idx_verification_code` (`verification_code`);
 
