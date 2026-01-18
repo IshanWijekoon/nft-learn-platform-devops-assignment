@@ -1,11 +1,54 @@
-## Merge Conflict Resolution
+## All student names exactly as in LMS
 
-To demonstrate real-world collaboration, our team intentionally created
-a merge conflict in README.md by modifying the same section from two
-different feature branches.
+Ishan Indrajith Madusanka
+Adheesa Dharmakeerthi
+Kavindu Hasaranga
 
-The conflict was resolved by reviewing both changes and combining them
-into a final version that represents the whole team’s contribution.
+## All student IDs
 
-updated by Team
+ITBIN-2313-0059
+ITBIN-2313-0022
+ITBIN-2313-0045
+
+## Role assignments
+
+ITBIN-2313-0059 - Devops 
+ITBIN-2313-0022 - Front-end
+ITBIN-2313-0045 - Back-end
+
+## Live deployment URL
+
+https://nft-learn-platform-devops-assignment.onrender.com
+
+## Individual contributions
+
+ DevOps
+
+Deployed the application on Render
+Configured environment variables and database connectivity
+Integrated external MySQL database with the production server
+Resolved deployment and server-side errors (HTTP 500, DB connection issues)
+
+ Frontend
+
+Designed and implemented the user interface
+Integrated frontend pages with backend APIs
+Handled form validation and user interactions
+Ensured responsive design and smooth user experience
+
+ Backend
+
+Developed backend logic using PHP
+Designed and implemented the MySQL database schema
+Implemented authentication and data handling features
+Debugged SQL, API, and server-side logic issues
+
+## Build status badges
+
+![CI Pipeline](https://github.com/IshanWijekoon/nft-learn-platform-devops-assignment/workflows/CI%20Pipeline/badge.svg)
+![Deploy](https://github.com/IshanWijekoon/nft-learn-platform-devops-assignment/workflows/Deploy%20to%20Production/badge.svg)
+
+
+
+
 
